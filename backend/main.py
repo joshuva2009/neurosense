@@ -35,6 +35,12 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+@app.middleware("http")
+async def add_global_headers(request, call_next):
+    response = await call_next(request)
+    response.headers["Access-Control-Allow-Origin"] = "*"
+    return response
+
 # ----------------- Pydantic Schemas -----------------
 
 class RegisterRequest(BaseModel):
